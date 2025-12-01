@@ -53,7 +53,7 @@ and deployed on **GitHub Pages**.
 ``` bash
 git clone https://github.com/tsverkunov/kameleoon.git
 cd kameleoon
-npm install
+npm install --legacy-peer-deps
 ```
 
 ------------------------------------------------------------------------
