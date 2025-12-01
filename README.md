@@ -80,5 +80,5 @@ npm run build
 
 ## 🙋‍♂️ Author
 
-**Цверкунов Иван**\
+**Ivan Tsverkunov**\
 Frontend Developer (React + TypeScript)
