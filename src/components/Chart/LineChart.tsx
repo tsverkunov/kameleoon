@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { ParentSize } from "@visx/responsive";
 import { Group } from "@visx/group";
 import { AreaClosed, LinePath } from "@visx/shape";
@@ -8,37 +8,34 @@ import { localPoint } from "@visx/event";
 import { useTooltip } from "@visx/tooltip";
 import { bisector } from "d3-array";
 import { curveBasis } from '@visx/curve';
-import { Tooltip } from "./Tooltip/Tooltip.tsx";
+import { Tooltip } from "../Tooltip/Tooltip.tsx";
 import { useExportToPNG } from "../../hooks/useExportToPNG.ts";
 import { AxisBottomSmart } from "./AxisBottomSmart.tsx";
 import { VerticalGrid } from "./VerticalGrid/VerticalGrid.tsx";
 import { useColorMap } from "../../hooks/useColorMap.ts";
 import styles from "./Chart.module.scss";
 import type { PreparedPoint } from "../../../utils/prepareChartData";
-import { ControlPanel } from "./ControrlPanel/ControlPanel.tsx";
+import { ControlPanel } from "../ControrlPanel/ControlPanel.tsx";
+import type { Period, StyleMode } from "../../../types/types.ts";
+import { chartStyles } from "../../assets/chartStyles.ts";
 
 type Props = {
   data: PreparedPoint[];
   variations: { id: string; name: string }[];
   height?: number;
-  initialSelected?: string[];
 };
-
-type StyleMode = "line" | "smooth" | "area";
-
 
 export default function LineChart({
                                     data,
                                     variations,
                                     height = 360,
-                                    initialSelected,
                                   }: Props) {
   const [ selected, setSelected ] = useState<string[]>(
-    initialSelected && initialSelected.length > 0
-      ? initialSelected
-      : variations.map((v) => v.id)
+    variations.map((v) => v.id)
   );
+  const [ period, setPeriod ] = useState<Period>("day");
   const [ styleMode, setStyleMode ] = useState<StyleMode>("line");
+  const [ theme, setTheme ] = useState<"light" | "dark">("light");
   const { exportToPNG, svgRef } = useExportToPNG();
   const colorMap = useColorMap({ variations });
 
@@ -53,10 +50,46 @@ export default function LineChart({
 
   const margin = { top: 18, right: 18, bottom: 36, left: 64 };
 
+  const displayData = useMemo(() => {
+    if (period === "day") return data;
+    const byWeek = new Map<string, { date: Date; sums: Record<string, number>; counts: Record<string, number> }>();
+    data.forEach((d) => {
+      const dt = d.date;
+      const day = (dt.getUTCDay() + 6) % 7; // Monday-based week (UTC)
+      const monday = new Date(Date.UTC(dt.getUTCFullYear(), dt.getUTCMonth(), dt.getUTCDate() - day));
+      const key = monday.toISOString().slice(0, 10);
+      let entry = byWeek.get(key);
+      if (!entry) {
+        entry = { date: monday, sums: {}, counts: {} };
+        byWeek.set(key, entry);
+      }
+      Object.keys(d).forEach((k) => {
+        if (k === "date") return;
+        const v = d[k] as number | null | undefined;
+        if (typeof v === "number" && !isNaN(v)) {
+          entry!.sums[k] = (entry!.sums[k] || 0) + v;
+          entry!.counts[k] = (entry!.counts[k] || 0) + 1;
+        }
+      });
+    });
+    return Array.from(byWeek.values())
+      .sort((a, b) => a.date.getTime() - b.date.getTime())
+      .map((e) => {
+        const row: any = { date: e.date };
+        const keys = new Set([ ...Object.keys(e.sums), ...Object.keys(e.counts) ]);
+        keys.forEach((k) => {
+          const sum = e.sums[k] || 0;
+          const cnt = e.counts[k] || 0;
+          row[k] = cnt > 0 ? sum / cnt : null; // weekly average of daily values
+        });
+        return row as PreparedPoint;
+      });
+  }, [ data, period ]);
+
   // convert selected values to compute y domain
   const yDomain = useMemo(() => {
     const values: number[] = [];
-    data.forEach((d) => {
+    displayData.forEach((d) => {
       selected.forEach((id) => {
         const v = d[id] as number | null | undefined;
         if (typeof v === "number" && !isNaN(v)) values.push(v);
@@ -65,36 +98,32 @@ export default function LineChart({
     const max = values.length ? Math.max(...values) : 1;
     const min = 0;
     return [ min, Math.ceil(max * 1.1) ];
-  }, [ data, selected ]);
-
-  // helper to toggle variation
-  const toggle = useCallback(
-    (id: string) => {
-      setSelected((prev) => {
-        const next = prev.includes(id) ? prev.filter((p) => p !== id) : [ ...prev, id ];
-        return next.length ? next : prev;
-      });
-    },
-    [ setSelected ]
-  );
+  }, [ displayData, selected ]);
 
   return (
     <div className={styles.chartRoot}>
       <ControlPanel
-        selected={selected}
+        setSelected={setSelected}
         variations={variations}
-        toggle={toggle}
         styleMode={styleMode}
         setStyleMode={setStyleMode}
         exportToPNG={exportToPNG}
+        onFit={() => {}}
+        onZoomOut={() => {}}
+        onZoomIn={() => {}}
+        onReset={() => {}}
+        period={period}
+        setPeriod={setPeriod}
+        theme={theme}
+        setTheme={setTheme}
       />
-      <div className={styles.svgWrap}>
+      <div className={`${styles.svgWrap} ${theme === "dark" ? styles.svgWrapDark : ""}`}>
         <ParentSize>
           {({ width, height: parentH }) => {
             const w = Math.max(320, width);
             const h = Math.max(240, Math.min(parentH || 400, 420, height));
             const xScale = scaleTime({
-              domain: [ data[0]?.date ?? new Date(), data[data.length - 1]?.date ?? new Date() ],
+              domain: [ displayData[0]?.date ?? new Date(), displayData[displayData.length - 1]?.date ?? new Date() ],
               range: [ margin.left, w - margin.right ],
             });
 
@@ -114,8 +143,8 @@ export default function LineChart({
             const handleMouse = (event: React.MouseEvent<SVGRectElement, MouseEvent>) => {
               const point = localPoint(event) || { x: 0, y: 0 };
               const x0 = xScale.invert(point.x);
-              const index = Math.min(data.length - 1, Math.max(0, bisectDate(data, x0) - 1));
-              const d0 = data[index] ?? data[0];
+              const index = Math.min(displayData.length - 1, Math.max(0, bisectDate(displayData, x0) - 1));
+              const d0 = displayData[index] ?? displayData[0];
               showTooltip({
                 tooltipLeft: xScale(d0.date),
                 tooltipTop: 10,
@@ -129,6 +158,7 @@ export default function LineChart({
                   xScale={xScale}
                   margin={margin}
                   height={h}
+                  tickCount={period === "week" ? 6 : 12}
                 />
 
                 <rect x={0} y={0} width={w} height={h} fill="transparent" rx={6}/>
@@ -144,11 +174,11 @@ export default function LineChart({
                         `${Number(v).toFixed(0)}%`
                     }
                     tickLabelProps={(value) => ({
-                      fill: "#94A3B8",
-                      fontSize: 11,
-                      fontFamily: "Roboto, sans-serif",
-                      fontWeight: 500,
-                      textAnchor: "end",
+                      fill: chartStyles.fill,
+                      fontSize: chartStyles.fontSize,
+                      fontFamily: chartStyles.fontFamily,
+                      fontWeight: chartStyles.fontWeight,
+                      textAnchor: chartStyles.textAnchor,
                       dx: -8,
                       dy: value === 0 ? 15 : 3,
                       style: { paintOrder: "stroke" },
@@ -173,7 +203,12 @@ export default function LineChart({
                     tickLength={0}
                     stroke="#E1DFE7"
                   />
-                  <AxisBottomSmart xScale={xScale} height={h} margin={margin}/>
+                  <AxisBottomSmart
+                    xScale={xScale}
+                    height={h}
+                    margin={margin}
+                    tickCount={period === "week" ? 6 : 12}
+                  />
 
                   {selected.map((id) => {
                     const stroke = colorMap[id];
@@ -181,7 +216,7 @@ export default function LineChart({
                       <g key={id}>
                         {styleMode === "area" && (
                           <AreaClosed
-                            data={data}
+                            data={displayData}
                             x={(d) => getX(d)}
                             y={(d) => {
                               const vy = getY(d, id);
@@ -195,7 +230,7 @@ export default function LineChart({
                         )}
 
                         <LinePath
-                          data={data}
+                          data={displayData}
                           x={(d) => getX(d)}
                           y={(d) => {
                             const vy = getY(d, id);

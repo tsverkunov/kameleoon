@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# 📈 Interactive A/B Test Line Chart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive interactive line chart for visualizing **conversion rate**
+statistics of A/B tests.\
+Built with **React + TypeScript + VisX**, styled with **CSS Modules**,
+and deployed on **GitHub Pages**.
 
-Currently, two official plugins are available:
+------------------------------------------------------------------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Demo
 
-## React Compiler
+👉 **Live Demo (GitHub Pages):** *https://tsverkunov.github.io/kameleoon/*
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+👉 **Repository:** *https://github.com/tsverkunov/kameleoon*
 
-## Expanding the ESLint configuration
+------------------------------------------------------------------------
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📊 Features
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Core Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+-   📈 **Conversion Rate Chart** for multiple variations\
+    `conversionRate = (conversions / visits) * 100`
+-   ⚡ **Interactive Hover**: vertical guideline + tooltip with daily
+    values
+-   🎚 **Variations Selector** (at least one variation always active)
+-   🕒 **Day / Week mode** with automatic weekly aggregation
+-   🔄 **Adaptive Axes** --- X and Y adjust to visible data
+-   \% **All values displayed as percentages**
+-   📱 **Responsive layout** (671px--1300px)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Bonus Features (implemented)
+
+-   🌗 Light / Dark theme toggle
+-   ✨ Line style selector: **Line / Smooth / Area**
+-   🖼 Export chart to PNG
+
+------------------------------------------------------------------------
+
+## 🛠 Tech Stack
+
+-   React 19
+-   TypeScript
+-   VisX
+-   CSS Modules
+-   Vite
+-   GitHub Pages
+
+------------------------------------------------------------------------
+
+## 📥 Installation
+
+``` bash
+git clone https://github.com/tsverkunov/kameleoon.git
+cd kameleoon
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+------------------------------------------------------------------------
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## ▶️ Running Locally
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+``` bash
+npm run dev
 ```
+
+Local server:
+
+    http://localhost:5173
+
+------------------------------------------------------------------------
+
+## 🔧 Build
+
+``` bash
+npm run build
+```
+
+------------------------------------------------------------------------
+
+## 🙋‍♂️ Author
+
+**Цверкунов Иван**\
+Frontend Developer (React + TypeScript)

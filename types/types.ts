@@ -18,3 +18,6 @@ export interface ChartRow {
   date: string;
   [key: string]: string | number;
 }
+
+export type StyleMode = "line" | "smooth" | "area";
+export type Period = "day" | "week";

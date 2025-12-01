@@ -1,9 +1,9 @@
-import type { PreparedPoint } from "../../../../utils/prepareChartData.ts";
+import type { PreparedPoint } from "../../../utils/prepareChartData.ts";
 import styles from "./Tooltip.module.scss";
 import React from "react"
-import calendarIcon from "../../../assets/icons/calendar.svg";
-import { dateFormatter } from "../../../../utils/dateFormatter.ts";
-import generalIcon from "../../../assets/icons/generalbest.svg";
+import calendarIcon from "../../assets/icons/calendar.svg";
+import { dateFormatter } from "../../../utils/dateFormatter.ts";
+import generalIcon from "../../assets/icons/generalbest.svg";
 
 interface TooltipProps {
   tooltipData: { point: PreparedPoint };

@@ -5,14 +5,16 @@ interface VerticalGridProps {
   xScale: ScaleTime<number, number>;
   margin: { top: number; bottom: number };
   height: number;
+  tickCount?: number;
 }
 
 export function VerticalGrid({
                                xScale,
                                margin,
                                height,
+                               tickCount = 10,
                              }: VerticalGridProps) {
-  const xTicks = xScale.ticks(10);
+  const xTicks = xScale.ticks(tickCount ?? 10);
 
   return (
     <>

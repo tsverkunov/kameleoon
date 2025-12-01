@@ -1,0 +1,67 @@
+.select {
+  position: relative;
+  display: inline-block;
+  font-family: inherit;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  padding: 6px 10px;
+  height: 32px;
+
+  background: white;
+  border: 1px solid #C7C5D0;
+  border-radius: 4px;
+
+  font-size: 14px;
+  color: #111827;
+
+  cursor: pointer;
+
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: #94a3b8;
+  }
+}
+
+.arrow {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+
+  &.open {
+    transform: rotate(180deg);
+  }
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  width: max-content;
+
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  z-index: 10;
+  overflow: hidden;
+}
+
+.option {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background: #f3f4f6;
+  }
+}
