@@ -1,7 +1,7 @@
 import { AxisBottom } from "@visx/axis";
 import { timeFormat } from "d3-time-format";
 import type { ScaleTime } from "d3-scale";
-import { chartStyles } from "../../assets/chartStyles.ts";
+import { chartStyles } from "../../../assets/chartStyles.ts";
 
 const formatDate = timeFormat("%-d %b"); // 1 Jan
 

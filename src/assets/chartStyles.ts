@@ -1,4 +1,4 @@
-interface ChartStyles {
+export interface ChartStyles {
   fill: string;
   fontSize: number;
   fontFamily: string;
