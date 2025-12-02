@@ -1,5 +1,5 @@
 import './App.css'
-import LineChart from "./components/Chart/LineChart.tsx";
+import Chart from "./components/Chart/Chart.tsx";
 
 import rawJson from "./data/data.json";
 import { prepareChartData } from "../utils/prepareChartData.ts";
@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-      <LineChart
+      <Chart
         data={data}
         variations={variations}
       />
