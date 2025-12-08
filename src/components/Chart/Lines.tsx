@@ -2,6 +2,7 @@ import { AreaClosed, LinePath } from "@visx/shape";
 import { curveBasis } from "@visx/curve";
 import type { PreparedPoint } from "../../../utils/prepareChartData.ts";
 import type { ScaleLinear } from "d3-scale";
+import type { Margin } from "../../../types/types.ts";
 
 
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
   stroke: string;
   selected: string[];
   h: number;
-  margin: { top: number; bottom: number };
+  margin: Margin;
   yScale: ScaleLinear<number, number>;
 }
 

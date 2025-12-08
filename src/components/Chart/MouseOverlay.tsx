@@ -1,12 +1,13 @@
 import React from "react";
 import { BackingForTooltip } from "../Tooltip/BackingForTooltip.tsx";
 import type { PreparedPoint } from "../../../utils/prepareChartData.ts";
+import type { Margin } from "../../../types/types.ts";
 
 
 interface Props {
   w: number;
   h: number;
-  margin: { top: number; right: number; bottom: number; left: number };
+  margin: Margin;
   handleMouse: React.MouseEventHandler<SVGRectElement>;
   handleLeave: React.MouseEventHandler<SVGRectElement>;
   tooltipData?: { point: PreparedPoint } | null;

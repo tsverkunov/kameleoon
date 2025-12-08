@@ -3,7 +3,7 @@ import { useScales } from "../../hooks/useScale.ts";
 import { useAccessors } from "../../hooks/useAccessors.ts";
 import type { PreparedPoint } from "../../../utils/prepareChartData.ts";
 import type { Ref } from "react";
-import type { Period, StyleMode } from "../../../types/types.ts";
+import type { Margin, Period, StyleMode } from "../../../types/types.ts";
 import { Axes } from "./Axes/Axes.tsx";
 import { ChartSvg } from "./ChartSvg.tsx";
 import { Lines } from "./Lines.tsx";
@@ -16,7 +16,7 @@ interface Props {
   parentH: number;
   displayData: PreparedPoint[];
   yDomain: number[];
-  margin: { top: number; right: number; bottom: number; left: number };
+  margin: Margin;
   selected: string[];
   svgRef?: Ref<SVGSVGElement>;
   period: Period;

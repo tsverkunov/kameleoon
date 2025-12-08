@@ -6,7 +6,7 @@ import { useExportToPNG } from "../../hooks/useExportToPNG.ts";
 import { useColorMap } from "../../hooks/useColorMap.ts";
 import styles from "./Chart.module.scss";
 import type { PreparedPoint } from "../../../utils/prepareChartData";
-import { ControlPanel } from "../ControrlPanel/ControlPanel.tsx";
+import { ControlPanel } from "../ControlPanel/ControlPanel.tsx";
 import type { Period, StyleMode } from "../../../types/types.ts";
 import { useDisplayData } from "../../hooks/useDisplayData.ts";
 import { ResponsiveChart } from "./ResponsiveChart.tsx";

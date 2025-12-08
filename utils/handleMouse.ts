@@ -12,7 +12,6 @@ type Deps = {
 
 const bisectDate = bisector<PreparedPoint, Date>((d) => d.date).left;
 
-
 export const makeHandleMouse = ({ xScale, displayData, showTooltip }: Deps): React.MouseEventHandler<SVGElement> =>
   (event) => {
     const point = localPoint(event) || { x: 0, y: 0 };

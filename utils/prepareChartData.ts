@@ -2,6 +2,7 @@ import type { DailyMetrics } from "../types/types";
 
 export type PreparedPoint = {
   date: Date;
+  // metrics: Record<string, number | null>
   [variationId: string]: Date | number | null;
 };
 

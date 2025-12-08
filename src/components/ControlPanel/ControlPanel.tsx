@@ -92,18 +92,18 @@ export const ControlPanel = ({
           />
 
           <button className={styles.iconBtn} aria-label="Fit to screen" onClick={handleFit}>
-            <img src={fitIcon} alt="fit to screen"/>
+            <img src={fitIcon} alt="fit to screen" aria-label="fit to screen"/>
           </button>
           <div className={styles.segmented} aria-label="Zoom controls">
             <button className={styles.segment} onClick={handleZoomOut} aria-label="Zoom out">
-              <img src={minusIcon} alt="zoom out"/>
+              <img src={minusIcon} alt="zoom out" aria-label="zoom out"/>
             </button>
             <button className={styles.segment} onClick={handleZoomIn} aria-label="Zoom in">
-              <img src={plusIcon} alt="zoom in"/>
+              <img src={plusIcon} alt="zoom in" aria-label="zoom in"/>
             </button>
           </div>
           <button className={styles.iconBtn} aria-label="Reset" onClick={handleReset}>
-            <img src={resetIcon} alt="reset"/>
+            <img src={resetIcon} alt="reset" aria-label="reset"/>
           </button>
           <button
             className={styles.controlBtn}

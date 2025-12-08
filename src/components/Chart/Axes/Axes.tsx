@@ -2,14 +2,14 @@ import { VerticalGrid } from "../VerticalGrid.tsx";
 import { AxisLeft, AxisRight, AxisTop } from "@visx/axis";
 import { AxisBottomSmart } from "./AxisBottomSmart.tsx";
 import type { ScaleLinear, ScaleTime } from "d3-scale";
-import type { Period } from "../../../../types/types.ts";
+import type { Margin, Period } from "../../../../types/types.ts";
 import type { ChartStyles } from "../../../assets/chartStyles.ts";
 
 
 interface Props {
   xScale: ScaleTime<number, number>;
   yScale: ScaleLinear<number, number>;
-  margin: { top: number; right: number; bottom: number; left: number };
+  margin: Margin;
   w: number;
   h: number;
   period: Period;

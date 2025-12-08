@@ -9,15 +9,12 @@ export interface DailyMetrics {
   conversions: Partial<Record<string, number>>;
 }
 
-export interface RawExperimentData {
-  variations: Variation[];
-  data: DailyMetrics[];
-}
-
-export interface ChartRow {
-  date: string;
-  [key: string]: string | number;
-}
+export type Margin = {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+};
 
 export type StyleMode = "line" | "smooth" | "area";
 export type Period = "day" | "week";
