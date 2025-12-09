@@ -21,6 +21,10 @@
   &:hover  {
     background: #F3F4F6;
   }
+  &:disabled, {
+    cursor: default;
+    background: #F3F4F6;
+  }
 }
 
 .legendItem {
@@ -53,6 +57,10 @@
   &:hover {
     background: #F3F4F6;
   }
+  &:disabled, {
+    cursor: default;
+    background: #F3F4F6;
+  }
 }
 
 .segmented {
@@ -77,6 +85,10 @@
   font-size: 16px;
   line-height: 1;
   &:hover {
+    background: #F3F4F6;
+  }
+  &:disabled, {
+    cursor: default;
     background: #F3F4F6;
   }
 }

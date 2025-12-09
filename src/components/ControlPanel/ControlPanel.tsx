@@ -6,6 +6,7 @@ import minusIcon from "../../assets/icons/minus.svg";
 import plusIcon from "../../assets/icons/plus.svg";
 import resetIcon from "../../assets/icons/reset.svg";
 import fitIcon from "../../assets/icons/interactunselect.svg";
+import { Button } from "../Button/Button.tsx";
 
 interface ControlPanelProps {
   setSelected: (ids: string[]) => void;
@@ -90,21 +91,40 @@ export const ControlPanel = ({
               { value: "area", label: "Area" },
             ]}
           />
-
-          <button className={styles.iconBtn} aria-label="Fit to screen" onClick={handleFit}>
-            <img src={fitIcon} alt="fit to screen" aria-label="fit to screen"/>
-          </button>
-          <div className={styles.segmented} aria-label="Zoom controls">
-            <button className={styles.segment} onClick={handleZoomOut} aria-label="Zoom out">
-              <img src={minusIcon} alt="zoom out" aria-label="zoom out"/>
-            </button>
-            <button className={styles.segment} onClick={handleZoomIn} aria-label="Zoom in">
-              <img src={plusIcon} alt="zoom in" aria-label="zoom in"/>
-            </button>
+          <Button
+            icon={fitIcon}
+            ariaLabel={"Fit to screen"}
+            alt={"Fit to screen"}
+            onClick={handleFit}
+            disabled={true}
+            className={styles.iconBtn}
+          />
+          <div className={styles.segmented}>
+            <Button
+              disabled={true}
+              onClick={handleZoomOut}
+              icon={minusIcon}
+              ariaLabel={"Zoom out"}
+              alt={"Zoom out"}
+              className={styles.segment}
+            />
+            <Button
+              icon={plusIcon}
+              ariaLabel={"Zoom in"}
+              alt={"Zoom in"}
+              onClick={handleZoomIn}
+              disabled={true}
+              className={styles.segment}
+            />
           </div>
-          <button className={styles.iconBtn} aria-label="Reset" onClick={handleReset}>
-            <img src={resetIcon} alt="reset" aria-label="reset"/>
-          </button>
+          <Button
+            icon={resetIcon}
+            ariaLabel={"Reset"}
+            alt={"Reset"}
+            onClick={handleReset}
+            className={styles.iconBtn}
+            disabled={true}
+          />
           <button
             className={styles.controlBtn}
             onClick={() => setTheme(prev => prev === "light" ? "dark" : "light")}
@@ -114,7 +134,6 @@ export const ControlPanel = ({
           </button>
           <button className={styles.controlBtn} onClick={exportToPNG} aria-label="Export PNG">Export PNG</button>
         </div>
-
       </div>
     </nav>
   );
